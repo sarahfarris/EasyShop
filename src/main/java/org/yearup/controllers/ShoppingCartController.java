@@ -79,7 +79,6 @@ public class ShoppingCartController
     private int getUserId(Principal principal) {
         // get the currently logged in username
         String userName = principal.getName();
-        System.out.println("username " + userName);
         // find database user by userId
         User user = userDao.getByUserName(userName);
        return user.getId();
