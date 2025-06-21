@@ -10,6 +10,8 @@ public class ShoppingCartItem
     private int quantity = 1;
     private BigDecimal discountPercent = BigDecimal.ZERO;
 
+    public ShoppingCartItem() {}
+
 
     public Product getProduct()
     {
