@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 public class DatabaseConfig
 {
     private BasicDataSource basicDataSource;
+    // I think i need to call instantiate the database path?
 
     @Bean
     public BasicDataSource dataSource()
@@ -27,5 +28,8 @@ public class DatabaseConfig
         basicDataSource.setUsername(username);
         basicDataSource.setPassword(password);
     }
+
+    //added this logic below to connect to database
+
 
 }
