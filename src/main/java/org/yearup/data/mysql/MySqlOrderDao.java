@@ -1,0 +1,57 @@
+package org.yearup.data.mysql;
+
+import org.springframework.stereotype.Component;
+import org.yearup.data.OrderDao;
+import org.yearup.models.Order;
+import org.yearup.models.OrderLineItem;
+
+import javax.sql.DataSource;
+import java.sql.*;
+
+@Component
+public class MySqlOrderDao  extends MySqlDaoBase implements OrderDao {
+    public MySqlOrderDao(DataSource dataSource) {
+        super(dataSource);
+    }
+
+    @Override
+    public void createOrder(Order order) {
+        String sql = """
+                INSERT INTO orders (user_id, date, address, city, state, zip, shipping_amount)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+                """;
+        try (Connection connection = getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setInt(1, order.getUserId());
+            ps.setTimestamp(2, Timestamp.valueOf(order.getDate()));
+            ps.setString(3, order.getAddress());
+            ps.setString(4, order.getCity());
+            ps.setString(5, order.getState());
+            ps.setString(6, order.getZip());
+            ps.setBigDecimal(7, order.getShippingAmount());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void addOrderLineItem(OrderLineItem item) {
+        String sql = """
+                INSERT INTO order_line_items (order_id, product_id, sales_price, quantity, discount, date)
+                VALUES (?, ?, ?, ?, ?, ?)
+                """;
+        try (Connection connection = getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setInt(1, item.getOrderId());
+            ps.setInt(2, item.getProductId());
+            ps.setBigDecimal(3, item.getSalesPrice());
+            ps.setInt(4, item.getQuantity());
+            ps.setBigDecimal(5, item.getDiscountPercent());
+            ps.setTimestamp(6, Timestamp.valueOf(item.getDate()));
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error creating line item", ex);
+        }
+    }
+}
