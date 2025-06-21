@@ -1,5 +1,6 @@
 package org.yearup.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +24,12 @@ public class CategoriesController
     private final CategoryDao categoryDao;
     private final ProductDao productDao;
 
+    @Autowired
     public CategoriesController(CategoryDao categoryDao, ProductDao productDao) {
         this.categoryDao = categoryDao;
         this.productDao = productDao;
     }
 
-// create an Autowired controller to inject the categoryDao and ProductDao
 
     // add the appropriate annotation for a get action
     @GetMapping("/categories")
@@ -39,7 +40,7 @@ public class CategoriesController
     }
 
     // add the appropriate annotation for a get action
-    @GetMapping("categories/{id}")
+    @GetMapping("/categories/{id}")
     public Category getById(@PathVariable int id)
     {
         Category category = categoryDao.getById(id);
@@ -52,7 +53,7 @@ public class CategoriesController
 
     // the url to return all products in category 1 would look like this
     // https://localhost:8080/categories/1/products
-    @GetMapping("{categoryId}/products")
+    @GetMapping("categories/{categoryId}/products")
     public List<Product> getProductsById(@PathVariable int categoryId)
     {
         // get a list of product by categoryId

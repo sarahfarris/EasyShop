@@ -20,8 +20,8 @@ import java.security.Principal;
 public class ShoppingCartController
 {
     // a shopping cart requires
-    private ShoppingCartDao shoppingCartDao;
-    private UserDao userDao;
+    private final ShoppingCartDao shoppingCartDao;
+    private final UserDao userDao;
 
     @Autowired
     public ShoppingCartController(ShoppingCartDao shoppingCartDao, UserDao userDao) {
@@ -46,7 +46,7 @@ public class ShoppingCartController
 
     // add a POST method to add a product to the cart - the url should be
     // https://localhost:8080/cart/products/15 (15 is the productId to be added
-    @RequestMapping(value = "/cart/products/{id}", method = RequestMethod.POST)
+    @PostMapping("/products/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public void addProduct(@PathVariable int id, Principal principal)
     {
@@ -58,7 +58,7 @@ public class ShoppingCartController
     // add a PUT method to update an existing product in the cart - the url should be
     // https://localhost:8080/cart/products/15 (15 is the productId to be updated)
     // the BODY should be a ShoppingCartItem - quantity is the only value that will be updated
-    @RequestMapping(value = "/cart/products/{id}", method = RequestMethod.PUT)
+    @PutMapping("/products/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public void updateQuantity(@PathVariable int id, Principal principal, @RequestBody ShoppingCartItem item)
     {
