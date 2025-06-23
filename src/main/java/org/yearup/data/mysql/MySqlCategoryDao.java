@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Component
 public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
 
-  // do I need a connection here?
+
   public MySqlCategoryDao(DataSource dataSource) {
     super(dataSource);
   }
@@ -41,22 +41,46 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
     return categories;
   }
 
+//  @Override
+//  public Category getById(int categoryId) {
+//    // get category by id
+//    String query = "SELECT * FROM categories WHERE categories.category_id = ?";
+//    try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
+//      preparedStatement.setInt(1, categoryId);
+//      try(ResultSet rs = preparedStatement.executeQuery()) {
+//        if (rs.next()) {
+//          return new Category(
+//                  rs.getInt("category_id"), rs.getString("name"), rs.getString("description"));
+//        } else {
+//          return null;
+//        }
+//      }
+//    } catch (SQLException e) {
+//      throw new RuntimeException(e);
+//    }
+//  }
+
+
   @Override
   public Category getById(int categoryId) {
-    // get category by id
-    String query = "SELECT * FROM categories WHERE categories.category_id = ?";
-    try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
-      preparedStatement.setInt(1, categoryId);
-      ResultSet rs = preparedStatement.executeQuery();
-      if (!rs.next()) {
-        return null;
-      }
-      return new Category(
-          rs.getInt("category_id"), rs.getString("name"), rs.getString("description"));
+    Category category = null;
+    String query = "SELECT * FROM categories \n" +
+            "WHERE category_id = ?;";
+    try (
+            Connection connection = getConnection();
+            PreparedStatement ps = connection.prepareStatement(query);
+    ) {
+      ps.setInt(1, categoryId);
 
+      try (ResultSet resultSet = ps.executeQuery()) {
+        if (resultSet.next()) {
+          category = mapRow(resultSet);
+        }
+      }
     } catch (SQLException e) {
-      throw new RuntimeException(e);
+      System.out.println(e.getMessage());
     }
+    return category;
   }
 
   @Override
