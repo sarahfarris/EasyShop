@@ -78,12 +78,20 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
         } else {
             String sql = "UPDATE shopping_cart SET quantity = ? WHERE user_id = ? AND product_id = ?";
             try (Connection connection = getConnection();
-                 PreparedStatement statement = connection.prepareStatement(sql)) {
+                 PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
                 statement.setInt(1, quantity);
                 statement.setInt(2, userId);
                 statement.setInt(3, productId);
-                statement.executeUpdate();
+                int rowsAffected = statement.executeUpdate();
+                if (rowsAffected == 0) {
+                    // This indicates that no row matching user_id and product_id was found.
+                    // You might want to log this, or throw a more specific exception
+                    // (e.g., CartItemNotFoundException, which could map to HTTP 404).
+                    System.out.println("No matching cart item found for update: user=" + userId + ", product=" + productId);
+                } else {
+                    System.out.println("Cart item updated. Rows affected: " + rowsAffected);
+                }
 
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -96,7 +104,7 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
         String sql = "DELETE FROM shopping_cart WHERE user_id = ?";
 
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             statement.setInt(1, userId);
             statement.executeUpdate();

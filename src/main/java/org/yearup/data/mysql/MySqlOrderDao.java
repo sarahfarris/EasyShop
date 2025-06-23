@@ -36,10 +36,11 @@ public class MySqlOrderDao  extends MySqlDaoBase implements OrderDao {
     }
 
     @Override
+    // TODO - this is not working - seems like order id foreign key check is failing
     public void addOrderLineItem(OrderLineItem item) {
         String sql = """
-                INSERT INTO order_line_items (order_id, product_id, sales_price, quantity, discount, date)
-                VALUES (?, ?, ?, ?, ?, ?)
+                INSERT INTO order_line_items (order_id, product_id, sales_price, quantity, discount)
+                VALUES (?, ?, ?, ?, ?)
                 """;
         try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -48,7 +49,6 @@ public class MySqlOrderDao  extends MySqlDaoBase implements OrderDao {
             ps.setBigDecimal(3, item.getSalesPrice());
             ps.setInt(4, item.getQuantity());
             ps.setBigDecimal(5, item.getDiscountPercent());
-            ps.setTimestamp(6, Timestamp.valueOf(item.getDate()));
             ps.executeUpdate();
         } catch (SQLException ex) {
             throw new RuntimeException("Error creating line item", ex);

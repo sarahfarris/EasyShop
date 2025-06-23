@@ -72,7 +72,7 @@ public class CategoriesController
     // add annotation to call this method for a PUT (update) action - the url path must include the categoryId
     // add annotation to ensure that only an ADMIN can call this function
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/categorids/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/categories/{id}", method = RequestMethod.PUT)
     public void updateCategory(@PathVariable int id, @RequestBody Category category)
     {
         // Category doesn't exist
@@ -87,7 +87,7 @@ public class CategoriesController
     // add annotation to call this method for a DELETE action - the url path must include the categoryId
     // add annotation to ensure that only an ADMIN can call this function
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/categorids/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/categories/{id}", method = RequestMethod.DELETE)
     public void deleteCategory(@PathVariable int id)
     {
         // Category doesn't exist

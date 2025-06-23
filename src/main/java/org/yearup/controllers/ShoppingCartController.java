@@ -46,6 +46,7 @@ public class ShoppingCartController
 
     // add a POST method to add a product to the cart - the url should be
     // https://localhost:8080/cart/products/15 (15 is the productId to be added
+    // TODO - this should return the cart
     @PostMapping("/products/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public void addProduct(@PathVariable int id, Principal principal)
@@ -58,6 +59,7 @@ public class ShoppingCartController
     // add a PUT method to update an existing product in the cart - the url should be
     // https://localhost:8080/cart/products/15 (15 is the productId to be updated)
     // the BODY should be a ShoppingCartItem - quantity is the only value that will be updated
+    // TODO - this should return the cart
     @PutMapping("/products/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public void updateQuantity(@PathVariable int id, Principal principal, @RequestBody ShoppingCartItem item)

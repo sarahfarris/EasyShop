@@ -51,6 +51,7 @@ public class OrderController {
         }
         // Calculates shipping price based on state
         order.setShippingAmount();
+        orderDao.createOrder(order);
 
         List<OrderLineItem> orderLineItems = new ArrayList<>();
         for (ShoppingCartItem cartItem : cart.getItems().values()) {
@@ -66,7 +67,6 @@ public class OrderController {
         }
         order.setItems(orderLineItems);
         order.calculateTotal();
-        orderDao.createOrder(order);
         cartDao.emptyCart(userId);
         return order;
     }
