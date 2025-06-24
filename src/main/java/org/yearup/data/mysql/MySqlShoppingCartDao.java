@@ -21,6 +21,12 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
         this.productDao = productDao;
     }
 
+    /**
+     * Retrieves shopping cart based on user and user authentication
+     * @param userId identifies and authenticates the user
+     * @return shopping cart
+     */
+
     @Override
     public ShoppingCart getByUserId(int userId) {
         ShoppingCart cart = new ShoppingCart();
@@ -46,6 +52,11 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
         return cart;
     }
 
+    /**
+     * Allows user to modify cart (positive additions)
+     * @param userId authenticates user
+     * @param productId to add product or modify quantity (updateQuantity())
+     */
     @Override
     public void addOrUpdate(int userId, int productId) {
         ShoppingCart shoppingCart = getByUserId(userId);
@@ -98,6 +109,11 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
             }
         }
     }
+
+    /**
+     * Empty entire cart, or remove one item (removeItem())
+     * @param userId authenticates user
+     */
 
     @Override
     public void emptyCart(int userId) {

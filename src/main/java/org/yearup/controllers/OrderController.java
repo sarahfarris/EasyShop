@@ -14,7 +14,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin
+/**
+ * Handles orders that are dependent on user privileges, returns as an HTTP response
+ */
+
+@CrossOrigin //added this but not sure if i really need it here
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
@@ -31,12 +35,18 @@ public class OrderController {
         this.profileDao = profileDao;
     }
 
+    /**
+     * Create orders with user authentication
+     * @param principal verifies user authentication by user ID
+     * @return place order and get shipping address
+     */
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Order createOrder(Principal principal) {
         int userId = getUserId(principal);
         ShoppingCart cart = cartDao.getByUserId(userId);
-        if (cart.getItems().isEmpty()) return null;
+        if (cart.getItems().isEmpty()) return null; //stop if cart is empty
         Profile profile = profileDao.getByUserId(userId);
         Order order = new Order();
         order.setUserId(userId);
@@ -47,7 +57,7 @@ public class OrderController {
             order.setState(profile.getState());
             order.setZip(profile.getZip());
         }
-        // Calculates shipping price based on state
+        // Calculates shipping price based on state - added feature
         order.setShippingAmount();
         orderDao.createOrder(order);
 

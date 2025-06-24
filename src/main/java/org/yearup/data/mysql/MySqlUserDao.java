@@ -20,6 +20,11 @@ public class MySqlUserDao extends MySqlDaoBase implements UserDao
         super(dataSource);
     }
 
+    /**
+     * Creates a new user
+     * @param newUser object to input new user information
+     * @return user with related information
+     */
 
     @Override
     public User create(User newUser)
@@ -48,6 +53,10 @@ public class MySqlUserDao extends MySqlDaoBase implements UserDao
         }
     }
 
+    /**
+     * Allows to see users on the back end
+     * @return list of users from database
+     */
     @Override
     public List<User> getAll()
     {

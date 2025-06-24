@@ -8,12 +8,20 @@ import org.yearup.models.OrderLineItem;
 import javax.sql.DataSource;
 import java.sql.*;
 
+/**
+ * Adds new orders to database
+ */
+
 @Component
 public class MySqlOrderDao  extends MySqlDaoBase implements OrderDao {
     public MySqlOrderDao(DataSource dataSource) {
         super(dataSource);
     }
 
+    /**
+     * Adds the order to database, gathers information needed for order
+     * @param order object that contains order information
+     */
     @Override
     public void createOrder(Order order) {
         String sql = """
@@ -35,8 +43,13 @@ public class MySqlOrderDao  extends MySqlDaoBase implements OrderDao {
         }
     }
 
+    /**
+     * Save item to order and add to database
+     * @param item to be added to the order
+     */
+
     @Override
-    // TODO - this is not working - seems like order id foreign key check is failing
+    // TODO - this is not working - seems like order id foreign key check is failing (needed order ID to create the order before it is generated is causing the error)
     public void addOrderLineItem(OrderLineItem item) {
         String sql = """
                 INSERT INTO order_line_items (order_id, product_id, sales_price, quantity, discount)

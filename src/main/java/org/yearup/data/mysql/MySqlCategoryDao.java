@@ -14,6 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+/**
+ * Handles search results by category that connects to database
+ */
 @Component
 public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
 
@@ -41,26 +45,8 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
     return categories;
   }
 
-//  @Override
-//  public Category getById(int categoryId) {
-//    // get category by id
-//    String query = "SELECT * FROM categories WHERE categories.category_id = ?";
-//    try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
-//      preparedStatement.setInt(1, categoryId);
-//      try(ResultSet rs = preparedStatement.executeQuery()) {
-//        if (rs.next()) {
-//          return new Category(
-//                  rs.getInt("category_id"), rs.getString("name"), rs.getString("description"));
-//        } else {
-//          return null;
-//        }
-//      }
-//    } catch (SQLException e) {
-//      throw new RuntimeException(e);
-//    }
-//  }
 
-
+// return a specific category
   @Override
   public Category getById(int categoryId) {
     Category category = null;
@@ -83,6 +69,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
     return category;
   }
 
+  //DAO method for admin privileges: create, update and delete
   @Override
   public Category create(Category category) {
     // create a new category
@@ -139,7 +126,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
     }
   }
 
-  // this isnt being used but in product it is, maybe i need to fix something so it is being used
+//turns database response into category object
   private Category mapRow(ResultSet row) throws SQLException {
     int categoryId = row.getInt("category_id");
     String name = row.getString("name");

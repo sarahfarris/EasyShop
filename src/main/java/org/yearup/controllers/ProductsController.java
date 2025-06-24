@@ -11,6 +11,10 @@ import org.yearup.data.ProductDao;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * Handles product searches (working with dao) and returns as HTTP response
+ */
+
 @RestController
 @RequestMapping("products")
 @CrossOrigin
@@ -23,6 +27,15 @@ public class ProductsController
     {
         this.productDao = productDao;
     }
+
+    /**
+     * Specifies the different ways to search a product, not mutually exclusive
+     * @param categoryId to look products up by their category
+     * @param minPrice look products up within a price range
+     * @param maxPrice "
+     * @param color products by color
+     * @return products that match parameters
+     */
 
     @GetMapping("")
     @PreAuthorize("permitAll()")
@@ -42,6 +55,12 @@ public class ProductsController
         }
     }
 
+    /**
+     * Search products by ID
+     * @param id product ID
+     * @return product that matches ID
+     */
+
     @GetMapping("{id}")
     @PreAuthorize("permitAll()")
     public Product getById(@PathVariable int id )
@@ -60,6 +79,12 @@ public class ProductsController
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
+
+    /**
+     * Add, update and delete product based on ADMIN privileges
+     * @param product product being added to database
+     * @return new product object as HTTP response
+     */
 
     @PostMapping()
     @PreAuthorize("hasRole('ROLE_ADMIN')")

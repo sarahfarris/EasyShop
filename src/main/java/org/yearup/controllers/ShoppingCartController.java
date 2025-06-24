@@ -14,6 +14,10 @@ import org.yearup.models.User;
 
 import java.security.Principal;
 
+/**
+ * Handles shopping cart privileges dependent on user authentication and returns as HTTP response
+ */
+
 @RestController
 @RequestMapping("cart")
 @CrossOrigin
@@ -28,6 +32,12 @@ public class ShoppingCartController
         this.shoppingCartDao = shoppingCartDao;
         this.userDao = userDao;
     }
+
+    /**
+     * Get cart dependent on user authentication
+     * @param principal identifies user authentication
+     * @return cart using dao
+     */
 
     @GetMapping("")
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -44,28 +54,34 @@ public class ShoppingCartController
         }
     }
 
-    // add a POST method to add a product to the cart - the url should be
-    // https://localhost:8080/cart/products/15 (15 is the productId to be added
-    // TODO - this should return the cart
+    /**
+     * Adds product to shopping cart with user authentication
+     * @param id identifies the product being added bd ID
+     * @param principal verifies user authentication
+     * @return cart object
+     */
+
+    // https://localhost:8080/cart/products/15 (15 is the productId to be added)
     @PostMapping("/products/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public void addProduct(@PathVariable int id, Principal principal)
+    public ShoppingCart addProduct(@PathVariable int id, Principal principal)
     {
         int userId = getUserId(principal);
         shoppingCartDao.addOrUpdate(userId, id);
+        return getCart(principal);
     }
 
 
-    // add a PUT method to update an existing product in the cart - the url should be
+
     // https://localhost:8080/cart/products/15 (15 is the productId to be updated)
     // the BODY should be a ShoppingCartItem - quantity is the only value that will be updated
-    // TODO - this should return the cart
     @PutMapping("/products/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public void updateQuantity(@PathVariable int id, Principal principal, @RequestBody ShoppingCartItem item)
+    public ShoppingCart updateQuantity(@PathVariable int id, Principal principal, @RequestBody ShoppingCartItem item)
     {
         int userId = getUserId(principal);
         shoppingCartDao.updateQuantity(userId, id, item.getQuantity());
+        return getCart(principal);
     }
 
     // add a DELETE method to clear all products from the current users cart
@@ -77,6 +93,11 @@ public class ShoppingCartController
         shoppingCartDao.emptyCart(getUserId(principal));
     }
 
+    /**
+     * used as a helper method to verify authentication
+     * @param principal object to verify authentication
+     * @return user ID which is used for authentication
+     */
 
     private int getUserId(Principal principal) {
         // get the currently logged in username

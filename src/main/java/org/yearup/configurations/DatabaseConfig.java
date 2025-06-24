@@ -9,8 +9,15 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DatabaseConfig
 {
+    /**
+     * Spring Configuration class for connecting to database which initializes the BasicDataSource
+     * @param url is the url of the website that uses the datasource
+     * @param username is the username (user/admin)
+     * @param password is the password
+     * @return the datasource that is access through the username and password, url is the location
+     */
+
     private BasicDataSource basicDataSource;
-    // I think i need to call instantiate the database path?
 
     @Bean
     public BasicDataSource dataSource()
@@ -29,7 +36,7 @@ public class DatabaseConfig
         basicDataSource.setPassword(password);
     }
 
-    //added this logic below to connect to database
+
 
 
 }

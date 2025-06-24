@@ -12,6 +12,10 @@ import org.yearup.models.User;
 
 import java.security.Principal;
 
+/**
+ * Handles user privileges to view and update profile and return as HTTP response
+ */
+
 @RestController
 @RequestMapping("profile")
 @CrossOrigin
@@ -26,6 +30,12 @@ public class ProfileController {
         this.userDao = userDao;
     }
 
+    /**
+     * Retrieves profile using user authentication
+     * @param principal verifies user authentication
+     * @return profile using user ID
+     */
+
     @GetMapping("")
     @PreAuthorize("hasRole('ROLE_USER')")
     public Profile getProfile(Principal principal) {
@@ -35,6 +45,13 @@ public class ProfileController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
+
+    /**
+     * Updates user profile with user privileges
+     * @param principal takes authenticated user and returns HTTP response to update profile
+     * @param profileToUpdate response to update profile
+     * @return returns updated profile
+     */
 
     @PutMapping("")
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -50,6 +67,13 @@ public class ProfileController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
+
+
+    /**
+     * used as a helper method to verify authentication
+     * @param principal object to verify authentication
+     * @return user ID which is used for authentication
+     */
 
     private int getUserId(Principal principal) {
         // get the currently logged in username

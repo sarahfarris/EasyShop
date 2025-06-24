@@ -12,6 +12,11 @@ import java.util.List;
 @Component
 public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
 {
+
+    /**
+     * Creates profile
+     * @param dataSource uses the datasource to connect to database to add profile
+     */
     public MySqlProfileDao(DataSource dataSource)
     {
         super(dataSource);
@@ -48,7 +53,6 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
 
     /**
      * Retrieves a user profile from the database by their user ID.
-     *
      * @param userId The ID of the user whose profile is to be retrieved.
      * @return The Profile object if found, or null if no profile exists for the given user ID.
      */
@@ -143,7 +147,7 @@ public class MySqlProfileDao extends MySqlDaoBase implements ProfileDao
 
         if (params.isEmpty()) {
             // No fields were provided to update, so nothing to do in the DB.
-            // Return the existing profile (or null, depending on your API's contract)
+            // Return the existing profile (or null, depending on API's contract)
             System.out.println("No update fields provided for user ID: " + userId + ". No database operation performed.");
             return getByUserId(userId); // Or throw new IllegalArgumentException("No fields to update");
         }

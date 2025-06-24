@@ -13,10 +13,11 @@ import org.yearup.models.Product;
 import java.util.ArrayList;
 import java.util.List;
 
-// add the annotations to make this a REST controller
-// add the annotation to make this controller the endpoint for the following url
-    // http://localhost:8080/categories
-// add annotation to allow cross site origin requests
+/**
+ * Handles results searched by category (works with dao) and returns data into a HTTP response
+ */
+
+// http://localhost:8080/categories
 @RestController
 @CrossOrigin
 public class CategoriesController
@@ -39,7 +40,7 @@ public class CategoriesController
         return categoryDao.getAllCategories();
     }
 
-    // add the appropriate annotation for a get action
+    // http://localhost:8080/categories/{id}
     @GetMapping("/categories/{id}")
     public Category getById(@PathVariable int id)
     {
@@ -60,8 +61,12 @@ public class CategoriesController
         return productDao.listByCategoryId(categoryId);
     }
 
-    // add annotation to call this method for a POST action
-    // add annotation to ensure that only an ADMIN can call this function
+    /**
+     * Handles admin privileges
+     * @param category create/delete category object
+     * @return category data
+     */
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/categories", method = RequestMethod.POST)
     public Category addCategory(@RequestBody Category category)
@@ -84,8 +89,7 @@ public class CategoriesController
     }
 
 
-    // add annotation to call this method for a DELETE action - the url path must include the categoryId
-    // add annotation to ensure that only an ADMIN can call this function
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/categories/{id}", method = RequestMethod.DELETE)
     public void deleteCategory(@PathVariable int id)
