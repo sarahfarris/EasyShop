@@ -10,6 +10,10 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * This unit test was part of the code that tests for the search by ID that originally failed with error code: IllegalStateException: Failed to load application context
+ */
+
 class MySqlProductDaoTest extends BaseDaoTestClass
 {
     private MySqlProductDao dao;
@@ -44,5 +48,7 @@ class MySqlProductDaoTest extends BaseDaoTestClass
         // assert
         assertEquals(expected.getPrice(), actual.getPrice(), "Because I tried to get product 1 from the database.");
     }
+
+
 
 }

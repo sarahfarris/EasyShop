@@ -73,15 +73,6 @@ class MySqlCategoryDaoTest {
         when(mockRs.getString("name")).thenReturn("Electronics").thenReturn("Fashion").thenReturn("Home & Kitchen");
         when(mockRs.getString("description")).thenReturn("Explore the latest gadgets and electronic devices.").thenReturn("Discover trendy clothing and accessories for men and women.").thenReturn("Find everything you need to decorate and equip your home.");
 
-//        // tests the second row
-//        when(mockRs.getInt("category_id")).thenReturn(2);
-//        when(mockRs.getString("name")).thenReturn("Fashion");
-//        when(mockRs.getString("description")).thenReturn("Discover trendy clothing and accessories for men and women.");
-//
-//        // test the third row
-//        when(mockRs.getInt("category_id")).thenReturn(3);
-//        when(mockRs.getString("name")).thenReturn("Home & Kitchen");
-//        when(mockRs.getString("description")).thenReturn("Find everything you need to decorate and equip your home.");
 
         // act
         List<Category> categories = categoryDao.getAllCategories();
