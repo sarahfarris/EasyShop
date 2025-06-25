@@ -23,7 +23,7 @@ public class MySqlOrderDao  extends MySqlDaoBase implements OrderDao {
      * @param order object that contains order information
      */
     @Override
-    public void createOrder(Order order) {
+    public Order createOrder(Order order) {
         String sql = """
                 INSERT INTO orders (user_id, date, address, city, state, zip, shipping_amount)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -37,10 +37,24 @@ public class MySqlOrderDao  extends MySqlDaoBase implements OrderDao {
             ps.setString(5, order.getState());
             ps.setString(6, order.getZip());
             ps.setBigDecimal(7, order.getShippingAmount());
-            ps.executeUpdate();
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                // Retrieve the generated keys
+                ResultSet generatedKeys = ps.getGeneratedKeys();
+
+                if (generatedKeys.next()) {
+                    // Retrieve the auto-incremented ID
+                    int orderId = generatedKeys.getInt(1);
+
+                    // get the newly inserted category
+                    order.setOrderId(orderId);
+                    return order;
+                }
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return order;
     }
 
     /**
@@ -49,8 +63,7 @@ public class MySqlOrderDao  extends MySqlDaoBase implements OrderDao {
      */
 
     @Override
-    // TODO - this is not working - seems like order id foreign key check is failing (needed order ID to create the order before it is generated is causing the error)
-    public void addOrderLineItem(OrderLineItem item) {
+    public OrderLineItem addOrderLineItem(OrderLineItem item) {
         String sql = """
                 INSERT INTO order_line_items (order_id, product_id, sales_price, quantity, discount)
                 VALUES (?, ?, ?, ?, ?)
@@ -62,9 +75,23 @@ public class MySqlOrderDao  extends MySqlDaoBase implements OrderDao {
             ps.setBigDecimal(3, item.getSalesPrice());
             ps.setInt(4, item.getQuantity());
             ps.setBigDecimal(5, item.getDiscountPercent());
-            ps.executeUpdate();
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                // Retrieve the generated keys
+                ResultSet generatedKeys = ps.getGeneratedKeys();
+
+                if (generatedKeys.next()) {
+                    // Retrieve the auto-incremented ID
+                    int orderId = generatedKeys.getInt(1);
+
+                    // get the newly inserted category
+                    item.setOrderLineItemId(orderId);
+                    return item;
+                }
+            }
         } catch (SQLException ex) {
             throw new RuntimeException("Error creating line item", ex);
         }
+        return item;
     }
 }

@@ -1,7 +1,6 @@
 package org.yearup.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.yearup.data.OrderDao;
 import org.yearup.data.ProfileDao;
@@ -42,11 +41,9 @@ public class OrderController {
      */
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public Order createOrder(Principal principal) {
         int userId = getUserId(principal);
         ShoppingCart cart = cartDao.getByUserId(userId);
-        if (cart.getItems().isEmpty()) return null; //stop if cart is empty
         Profile profile = profileDao.getByUserId(userId);
         Order order = new Order();
         order.setUserId(userId);
@@ -57,10 +54,10 @@ public class OrderController {
             order.setState(profile.getState());
             order.setZip(profile.getZip());
         }
+        if (cart.getItems().isEmpty()) return order; //stop if cart is empty
         // Calculates shipping price based on state - added feature
         order.setShippingAmount();
         orderDao.createOrder(order);
-
         List<OrderLineItem> orderLineItems = new ArrayList<>();
         for (ShoppingCartItem cartItem : cart.getItems().values()) {
             OrderLineItem item = new OrderLineItem();
@@ -73,7 +70,8 @@ public class OrderController {
             orderLineItems.add(item);
             orderDao.addOrderLineItem(item);
         }
-        order.setItems(orderLineItems);
+        System.out.println("#debug order line items " + orderLineItems);
+        order.setLineItems(orderLineItems);
         order.calculateTotal();
         cartDao.emptyCart(userId);
         return order;

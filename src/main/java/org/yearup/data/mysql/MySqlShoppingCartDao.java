@@ -49,6 +49,7 @@ public class MySqlShoppingCartDao extends MySqlDaoBase implements ShoppingCartDa
             throw new RuntimeException(e);
         }
 
+        cart.calculateTotal();
         return cart;
     }
 

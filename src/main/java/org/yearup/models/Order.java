@@ -15,7 +15,7 @@ public class Order {
     private String zip;
     private BigDecimal shippingAmount = null;
     private BigDecimal total = BigDecimal.valueOf(-1);
-    private List<OrderLineItem> items = new ArrayList<>();
+    private List<OrderLineItem> lineItems = new ArrayList<>();
 
     public int getOrderId() {
         return orderId;
@@ -93,19 +93,19 @@ public class Order {
     }
 
     public void calculateTotal() {
-        this.total = items
+        this.total = lineItems
                 .stream()
                 .map(OrderLineItem::getTotal)
                 .reduce( BigDecimal.ZERO, (lineTotal, subTotal) -> subTotal.add(lineTotal));
 
     }
 
-    public List<OrderLineItem> getItems() {
-        return items;
+    public List<OrderLineItem> getLineItems() {
+        return lineItems;
     }
 
-    public void setItems(List<OrderLineItem> items) {
-        this.items = items;
+    public void setLineItems(List<OrderLineItem> lineItems) {
+        this.lineItems = lineItems;
     }
 
     // Calculates shipping amount by state based on their sales tax.

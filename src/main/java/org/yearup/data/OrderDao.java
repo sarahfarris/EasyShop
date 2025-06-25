@@ -4,6 +4,6 @@ import org.yearup.models.Order;
 import org.yearup.models.OrderLineItem;
 
 public interface OrderDao {
-    void createOrder(Order order);
-    void addOrderLineItem(OrderLineItem orderLineItem);
+    Order createOrder(Order order);
+    OrderLineItem addOrderLineItem(OrderLineItem orderLineItem);
 }
