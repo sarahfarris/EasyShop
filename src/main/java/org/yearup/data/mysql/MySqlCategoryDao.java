@@ -39,7 +39,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao {
                 rs.getInt("category_id"), rs.getString("name"), rs.getString("description")));
       }
     } catch (SQLException e) {
-      throw new RuntimeException(e);
+      throw new RuntimeException("Cannot retrieve categories" + e);
     }
 
     return categories;
