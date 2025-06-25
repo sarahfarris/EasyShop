@@ -83,7 +83,7 @@ class MySqlCategoryDaoTest {
         verify(mockDataSource, times(1)).getConnection(); // getConnection() called once
         verify(mockConnection, times(1)).prepareStatement("SELECT * FROM categories"); // The specific query was prepared
         verify(mockPs, times(1)).executeQuery(); // executeQuery() was called once
-        verify(mockRs, times(4)).next(); // next() was called 3 times (true, true, false) originally
+        verify(mockRs, times(4)).next(); // next() was called 4 times
         verify(mockRs, times(3)).getInt("category_id"); // getInt("category_id") called twice (for each row)
         verify(mockRs, times(3)).getString("name");
         verify(mockRs, times(3)).getString("description");
