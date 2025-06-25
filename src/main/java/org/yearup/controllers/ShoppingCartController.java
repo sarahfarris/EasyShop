@@ -21,8 +21,7 @@ import java.security.Principal;
 @RestController
 @RequestMapping("cart")
 @CrossOrigin
-public class ShoppingCartController
-{
+public class ShoppingCartController {
     // a shopping cart requires
     private final ShoppingCartDao shoppingCartDao;
     private final UserDao userDao;
@@ -41,15 +40,11 @@ public class ShoppingCartController
 
     @GetMapping("")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ShoppingCart getCart(Principal principal)
-    {
-        try
-        {
+    public ShoppingCart getCart(Principal principal) {
+        try {
             // use the shoppingcartDao to get all items in the cart and return the cart
             return shoppingCartDao.getByUserId(getUserId(principal));
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
@@ -64,21 +59,18 @@ public class ShoppingCartController
     // https://localhost:8080/cart/products/15 (15 is the productId to be added)
     @PostMapping("/products/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ShoppingCart addProduct(@PathVariable int id, Principal principal)
-    {
+    public ShoppingCart addProduct(@PathVariable int id, Principal principal) {
         int userId = getUserId(principal);
         shoppingCartDao.addOrUpdate(userId, id);
         return getCart(principal);
     }
 
 
-
     // https://localhost:8080/cart/products/15 (15 is the productId to be updated)
     // the BODY should be a ShoppingCartItem - quantity is the only value that will be updated
     @PutMapping("/products/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ShoppingCart updateQuantity(@PathVariable int id, Principal principal, @RequestBody ShoppingCartItem item)
-    {
+    public ShoppingCart updateQuantity(@PathVariable int id, Principal principal, @RequestBody ShoppingCartItem item) {
         int userId = getUserId(principal);
         shoppingCartDao.updateQuantity(userId, id, item.getQuantity());
         return getCart(principal);
@@ -88,9 +80,10 @@ public class ShoppingCartController
     // https://localhost:8080/cart
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("")
-    public void deleteCart(Principal principal)
-    {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ShoppingCart deleteCart(Principal principal) {
         shoppingCartDao.emptyCart(getUserId(principal));
+        return getCart(principal);
     }
 
     /**
@@ -104,7 +97,7 @@ public class ShoppingCartController
         String userName = principal.getName();
         // find database user by userId
         User user = userDao.getByUserName(userName);
-       return user.getId();
+        return user.getId();
     }
 
 }

@@ -46,7 +46,7 @@ public class CategoriesController
     {
         Category category = categoryDao.getById(id);
         if (category == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         } else {
             return category;
         }
@@ -69,6 +69,7 @@ public class CategoriesController
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/categories", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
     public Category addCategory(@RequestBody Category category)
     {
        return categoryDao.create(category);
@@ -92,6 +93,7 @@ public class CategoriesController
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/categories/{id}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategory(@PathVariable int id)
     {
         // Category doesn't exist

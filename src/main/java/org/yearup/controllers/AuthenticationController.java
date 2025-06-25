@@ -107,7 +107,6 @@ public class AuthenticationController {
 
         try
         {
-
             boolean exists = userDao.exists(newUser.getUsername());
             if (exists)
             {
