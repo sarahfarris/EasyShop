@@ -10,13 +10,17 @@
 * Update products would create a new product
   * Fixed in Products Controller -> changed .create() to .update()
 
-    ![image](https://github.com/user-attachments/assets/29dc0aa8-1047-4fd7-9293-c2f40323167d)
+  ![image](https://github.com/user-attachments/assets/29dc0aa8-1047-4fd7-9293-c2f40323167d)
 
 *  Deleted duplicate products directly from SQL database
+
+     ![image](https://github.com/user-attachments/assets/c14f0dde-8914-4abf-9454-931344ea974a)
+
+   
 * Search functions working as intended
     * Switched less than/equal to -> greater than/equal to
 
-       ![image](https://github.com/user-attachments/assets/ca014669-376d-43ac-9c50-284f3214ef08)
+  ![image](https://github.com/user-attachments/assets/ca014669-376d-43ac-9c50-284f3214ef08)
 
 ## New Features 🧩
 * Allow users to add to cart
