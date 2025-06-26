@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * This unit test was part of the code that tests for the search by ID that originally failed with error code: IllegalStateException: Failed to load application context
+ * It is now working with major modifications to the TestDatabaseConfig Class and additions to the pom.xml
  */
 
 class MySqlProductDaoTest extends BaseDaoTestClass
