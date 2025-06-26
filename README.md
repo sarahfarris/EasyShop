@@ -1,6 +1,12 @@
-# Easy Shop Bug Fixes and New Features
+![Easy Shop Banner small](https://github.com/user-attachments/assets/58c496b9-f881-4e00-9ddd-9e136cb92367)
 
-## Bugs
+
+
+
+
+# Bug Fixes and New Features
+
+## Bugs 🪲
 * Update products would create a new product
   * Fixed in Products Controller -> changed .create() to .update()
 
@@ -12,7 +18,7 @@
 
        ![image](https://github.com/user-attachments/assets/ca014669-376d-43ac-9c50-284f3214ef08)
 
-## New Features
+## New Features 🧩
 * Allow users to add to cart
 
   ![Easy_Shop_Screenshot](https://github.com/user-attachments/assets/75bc5d73-290c-4914-ae31-1e9e1aeffdcd)
